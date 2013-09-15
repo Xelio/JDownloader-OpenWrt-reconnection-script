@@ -1,0 +1,34 @@
+[[[HSRC]]]
+    [[[STEP]]]
+        [[[DEFINE routername="OpenWrt Attitude Adjustment"/]]]
+    [[[/STEP]]]
+    [[[STEP]]]
+        [[[REQUEST]]]
+            POST /cgi-bin/luci HTTP/1.1
+            Host: %%%routerip%%%
+            username=%%%user%%%&password=%%%pass%%%
+        [[[/REQUEST]]]
+        [[[RESPONSE keys="stok"]]]
+            stok=(.*?)/
+        [[[/RESPONSE]]]
+    [[[/STEP]]]
+
+    [[[STEP]]]
+        [[[REQUEST]]]
+        POST /cgi-bin/luci/;stok=%%%stok%%%/admin/network/iface_shutdown/wan HTTP/1.1
+        Host: %%%routerip%%%
+        [[[/REQUEST]]]
+    [[[/STEP]]]
+
+    [[[STEP]]]
+        [[[WAIT seconds="5"/]]]
+    [[[/STEP]]]
+
+    [[[STEP]]]
+        [[[REQUEST]]]
+        POST /cgi-bin/luci/;stok=%%%stok%%%/admin/network/iface_reconnect/wan HTTP/1.1
+        Host: %%%routerip%%%
+        [[[/REQUEST]]]
+    [[[/STEP]]]
+
+[[[/HSRC]]]
